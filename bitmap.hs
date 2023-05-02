@@ -4,29 +4,38 @@ type Position = (Int, Int)
 
 bitmapHoles :: [String] -> Int
 bitmapHoles strArr =
-    let numArray = listArray((0,0),(length strArr-1, length (head strArr)-1)) (concat strArr)
+    let numArray = listArray ((0, 0), (length strArr - 1, length (head strArr) - 1)) (concat strArr)
     in findZero numArray []
 
--- | The 'findZero' function takes an array and a list of visited positions,
--- and returns the number of holes in the bitmap.
-findZero :: Array Position Char ->[Position] ->Int
-findZero numArray visited = go 0 [ (i, j) | i <- [0 .. fst (snd (bounds numArray))], j <- [0 .. snd (snd (bounds numArray))]]
+findZero :: Array Position Char -> [Position] -> Int
+findZero numArray visited
+    | null unvisitedPositions = 0
+    | otherwise = 1 + findZero (markPositionsAsVisited numArray visitedNeighbours) (visited ++ visitedNeighbours)
     where
-    go count [] = count
-    go count (p:ps) =
-      if numArray ! p == '0' && p `notElem` visited
-        then go (count + 1) (ps ++ neighbours numArray p (visited ++ [p]))
-        else go count ps
+        unvisitedPositions = filter (\pos -> numArray ! pos == '0' && pos `notElem` visited) [(i, j) | i <- [0 .. fst (snd (bounds numArray))], j <- [0 .. snd (snd (bounds numArray))]]
+        p = head unvisitedPositions
+        visitedNeighbours = p : neighbours numArray p visited
 
--- | The 'neighbours' function takes an array, a position, and a list of visited positions,
--- and returns a list of new positions that are part of the same hole.
 neighbours :: Array Position Char -> Position -> [Position] -> [Position]
-neighbours numArray (i, j) visited =
-  let validPositions = filter (inRange (bounds numArray)) [(i+1, j), (i-1, j), (i, j+1), (i, j-1)]
-      newVisited = filter (\pos -> numArray ! pos == '0' && pos `notElem` visited) validPositions
-  in foldr (\pos acc -> neighbours numArray pos (visited ++ newVisited) ++ acc) newVisited newVisited
+neighbours numArray (i, j) visited = go [(i+1, j), (i-1, j), (i, j+1), (i, j-1)] visited []
+    where
+        go [] _ acc = acc
+        go (p:ps) visitedPositions acc
+            | not (inRange (bounds numArray) p) = go ps visitedPositions acc
+            | p `elem` visitedPositions = go ps visitedPositions acc
+            | numArray ! p == '0' = go (ps ++ neighbours numArray p (visitedPositions ++ [p])) (visitedPositions ++ [p]) (p:acc)
+            | otherwise = go ps visitedPositions acc
 
--- | The 'main' function is the entry point of the program. It calls the 'bitmapHoles'
--- function with the example input and prints the result.
+markPositionsAsVisited :: Array Position Char -> [Position] -> Array Position Char
+markPositionsAsVisited numArray positions = numArray // [(pos, '1') | pos <- positions]
+
 main :: IO ()
-main = print $ bitmapHoles ["01001", "00001", "11010", "11011"]
+main = do
+    let input = ["01001", "00001", "11010", "11011"]
+    let result = bitmapHoles input
+    print result
+
+
+
+
+

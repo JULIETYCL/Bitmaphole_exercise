@@ -29,8 +29,9 @@ The implementation uses the `Array` data type from the `Data.Array` module to re
 To run the Haskell solution, follow these steps:
 
 1. Make sure you have the GHC (Glasgow Haskell Compiler) installed on your system.
-2. Compile the `BitmapHoles.hs` file by running `ghc -o bitmap_holes BitmapHoles.hs` in your terminal.
-3. Run the compiled program by executing `./bitmap_holes`.
+2. Navigate Powershell or CMD to the file and enter `ghci`
+3. load the file by the following `:load bitmap.hs`.
+4. Enter main to run the file
 
 The program will output the number of holes for the example bitmap provided in the `main` function.
 
