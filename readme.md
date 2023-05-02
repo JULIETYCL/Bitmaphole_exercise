@@ -6,17 +6,21 @@ Find the number of 'holes' in the bitmap, where a hole is a contiguous region of
 
 For example, this has two holes:
 
+```
 11111
 10101
 10101
 11111
+```
 
 ... and this has only one:
 
+```
 11111
 10001
 10101
 11111
+```
 
 ## Haskell Solution
 
