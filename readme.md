@@ -30,8 +30,8 @@ To run the Haskell solution, follow these steps:
 
 1. Make sure you have the GHC (Glasgow Haskell Compiler) installed on your system.
 2. Navigate Powershell or CMD to the file and enter `ghci`
-3. load the file by the following `:load bitmap.hs`.
-4. Enter main to run the file
+3. Load the file by the following `:load bitmap.hs`.
+4. Input `main` to run the file
 
 The program will output the number of holes for the example bitmap provided in the `main` function.
 
