@@ -24,7 +24,7 @@ For example, this has two holes:
 
 ## Haskell Solution
 
-The Haskell solution provided in this repository consists of a single Haskell source file, `BitmapHoles.hs`.
+The Haskell solution provided in this repository consists of a single Haskell file, `bitmap.hs`.
 
 The main function in the file is `bitmapHoles :: [String] -> Int`, which takes a list of strings representing a bitmap and returns the number of holes in the bitmap.
 
